@@ -24,6 +24,7 @@ void		printf_pid(void)
 
 void sigusr_handler(int sig)
 {
+
   if(sig == SIGUSR1)
     find_char();
   size++;
@@ -35,14 +36,23 @@ void sigusr_handler(int sig)
     c = 0;
   }
   else if(size > 8)
+  {
     exit(EXIT_FAILURE);
+  }
 }
 
 int main()
 {
+  struct sigaction act;
+
+  c = 0;
+  size = 0;
   printf_pid();
-	signal(SIGUSR1, sigusr_handler);
-  signal(SIGUSR2, sigusr_handler);
+  act.sa_handler = sigusr_handler;
+  act.sa_flags = 0;
+  sigemptyset(&act.sa_mask);
+	sigaction(SIGUSR1, &act, NULL);
+  sigaction(SIGUSR2, &act, NULL);
   while(1)
     pause();
 	exit(EXIT_SUCCESS);
