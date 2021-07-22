@@ -1,20 +1,19 @@
 #include "minitalk.h"
 
-
-void send_bytes(int pid,char *c)
+void	send_bytes(int pid, char *c)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	j = 0;
-	while((size_t) j < ft_strlen(c))
+	while ((size_t)j < ft_strlen(c))
 	{
 		i = 0;
-		while(i <= 7)
+		while (i <= 7)
 		{
-			if(((c[j] >> i) & 0x01) == 1)
+			if (((c[j] >> i) & 0x01) == 1)
 				kill(pid, SIGUSR1);
-			else 
+			else
 				kill(pid, SIGUSR2);
 			i++;
 			usleep(20);
@@ -23,9 +22,9 @@ void send_bytes(int pid,char *c)
 	}
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	int pid;
+	int	pid;
 
 	if (ac != 3)
 	{

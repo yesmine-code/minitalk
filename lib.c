@@ -12,7 +12,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-int		ft_count(int n)
+int	ft_count(int n)
 {
 	int	i;
 
@@ -57,8 +57,8 @@ char	*ft_itoa(int n)
 
 int	ft_isspace(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\f' ||
-	c == '\v' || c == '\n' || c == '\r')
+	if (c == ' ' || c == '\t' || c == '\f'
+		|| c == '\v' || c == '\n' || c == '\r')
 		return (1);
 	return (0);
 }
@@ -90,54 +90,4 @@ int	ft_atoi(const char *nptr)
 			return (0);
 	}
 	return (sign * result);
-}
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t	i;
-	char	*dest_local;
-	char	*src_local;
-
-	i = 0;
-	dest_local = (char *)dest;
-	src_local = (char *)src;
-	if (!dest && !src)
-	{
-		return (NULL);
-	}
-	while (i < n)
-	{
-		dest_local[i] = src_local[i];
-		i++;
-	}
-	return (dest);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*str;
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	str = malloc(sizeof(*str) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (str != NULL)
-	{
-		while (i < ft_strlen(s1))
-		{
-			str[i] = s1[i];
-			i++;
-		}
-		while (j < ft_strlen(s2))
-		{
-			str[i] = s2[j];
-			i++;
-			j++;
-		}
-		str[i] = '\0';
-	}
-	return (str);
 }

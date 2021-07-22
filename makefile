@@ -13,15 +13,16 @@ CFLAGS		= -Wall -Wextra -Werror
 all: 			${NAME}
 
 $(NAME) : $(SERVER) $(CLIENT)
-			$(CC) $(CFLAGS) lib.c $(SERVER) -o server 
-			$(CC) $(CFLAGS) lib.c $(CLIENT) -o client
+			$(CC) $(CFLAGS) -I includes lib.c $(SERVER) -o server 
+			$(CC) $(CFLAGS) -I includes lib.c $(CLIENT) -o client
 
 
 clean:
-				${RM} ${OBJS} 
+				${RM} server 
 
 fclean:			clean
-				${RM} ${NAME}
+				${RM} client
+
 
 re:				fclean all
 

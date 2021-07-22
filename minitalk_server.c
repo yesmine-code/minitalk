@@ -1,17 +1,17 @@
 #include "minitalk.h"
 
-static int size;
-static char c;
+static int		g_size;
+static char		g_c;
 
-void find_char(void)
-{  
-  char bit;
+void	find_char(void)
+{
+	char	bit;
 
-  bit = 1;
-  c |= (bit << (size));
+	bit = 1;
+	g_c |= (bit << (g_size));
 }
 
-void		printf_pid(void)
+void	printf_pid(void)
 {
 	char	*pid;
 
@@ -22,38 +22,34 @@ void		printf_pid(void)
 	free(pid);
 }
 
-void sigusr_handler(int sig)
+void	sigusr_handler(int sig)
 {
-
-  if(sig == SIGUSR1)
-    find_char();
-  size++;
-  
-  if(size == 8)
-  {
-    write(1, &c, 1);
-    size = 0;
-    c = 0;
-  }
-  else if(size > 8)
-  {
-    exit(EXIT_FAILURE);
-  }
+	if (sig == SIGUSR1)
+		find_char();
+	g_size++;
+	if (g_size == 8)
+	{
+		write(1, &g_c, 1);
+		g_size = 0;
+		g_c = 0;
+	}
+	else if (g_size > 8)
+		exit(EXIT_FAILURE);
 }
 
-int main()
+int	main(void)
 {
-  struct sigaction act;
+	struct sigaction	act;
 
-  c = 0;
-  size = 0;
-  printf_pid();
-  act.sa_handler = sigusr_handler;
-  act.sa_flags = 0;
-  sigemptyset(&act.sa_mask);
+	g_c = 0;
+	g_size = 0;
+	printf_pid();
+	act.sa_handler = sigusr_handler;
+	act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
 	sigaction(SIGUSR1, &act, NULL);
-  sigaction(SIGUSR2, &act, NULL);
-  while(1)
-    pause();
-	exit(EXIT_SUCCESS);
+	sigaction(SIGUSR2, &act, NULL);
+	while (1)
+		pause ();
+	exit (EXIT_SUCCESS);
 }
