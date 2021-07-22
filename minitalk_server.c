@@ -22,11 +22,8 @@ void		printf_pid(void)
 	free(pid);
 }
 
-void sigusr_handler(int sig, siginfo_t *siginfo, void *context)
+void sigusr_handler(int sig)
 {
-  siginfo = NULL;
-  context = NULL;
-
   if(sig == SIGUSR1)
     find_char();
   size++;
@@ -38,27 +35,14 @@ void sigusr_handler(int sig, siginfo_t *siginfo, void *context)
     c = 0;
   }
   else if(size > 8)
-  {
-    write(1, "error", 5);
-    size = 0;
-    c = 0;
-  }
+    exit(EXIT_FAILURE);
 }
 
 int main()
 {
-  struct sigaction act;
-  int              pid;
-
-  c = 0;
-  size = 0;
-  pid = getpid();
   printf_pid();
-  act.sa_sigaction = &sigusr_handler;
-  act.sa_flags = 0;
-  sigemptyset(&act.sa_mask);
-	sigaction(SIGUSR1, &act, NULL);
-  sigaction(SIGUSR2, &act, NULL);
+	signal(SIGUSR1, sigusr_handler);
+  signal(SIGUSR2, sigusr_handler);
   while(1)
     pause();
 	exit(EXIT_SUCCESS);
