@@ -1,13 +1,9 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <signal.h>
-#include <string.h>
 #include "minitalk.h"
 
 static int size;
 static char c;
 
-void find_char()
+void find_char(void)
 {  
   char bit;
 
@@ -28,8 +24,9 @@ void		printf_pid(void)
 
 void sigusr_handler(int sig, siginfo_t *siginfo, void *context)
 {
-  int i;
-  
+  siginfo = NULL;
+  context = NULL;
+
   if(sig == SIGUSR1)
     find_char();
   size++;
@@ -50,22 +47,19 @@ void sigusr_handler(int sig, siginfo_t *siginfo, void *context)
 
 int main()
 {
-  int pid;
+  struct sigaction act;
+  int              pid;
 
   c = 0;
   size = 0;
   pid = getpid();
   printf_pid();
-
-  struct sigaction act;
   act.sa_sigaction = &sigusr_handler;
   act.sa_flags = 0;
   sigemptyset(&act.sa_mask);
- 
 	sigaction(SIGUSR1, &act, NULL);
   sigaction(SIGUSR2, &act, NULL);
- 
   while(1)
     pause();
-  return 0;
+	exit(EXIT_SUCCESS);
 }
